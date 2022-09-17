@@ -1,21 +1,32 @@
 ---
-title: "Simple document"
+title: "p8105_hw1_fy2297"
 output: html_document
 ---
 
-I'm an R Markdown document! 
 
-# Section 1
 
-Here's a **code chunk** that samples from 
-a _normal distribution_:
-
+# Problem 1
+## description of the dataset
 ```{r}
-samp = rnorm(100)
-length(samp)
+data("penguins", package = "palmerpenguins")
+penguins_new <- penguins[-c(4,272),]
+num_row <- nrow(penguins)
+num_col <- ncol(penguins)
+mean_flipper <- mean(penguins_new$flipper_length_mm)
+mean_flipper
+```
+The name of the dataset is called penguins, and there are `r num_col` different variables.
+The size of the dataset is `r num_col` * `r num_row`, and the mean flipper length is `r mean_flipper`mm.
+
+## scatterplot making
+```{r}
+library(tidyverse)
+x_axis <- penguins_new$bill_length_mm
+y_axis <- penguins_new$flipper_length_mm
+plot = tibble(x = x_axis, y = y_axis)
+plot
+ggplot(plot,aes(x=x, y=y, color = "blue"))+geom_point()+labs(title = "bill length v.s. flipper length", x = "bill length (mm)",y = "flipper length (mm)")
 ```
 
-# Section 2
+# Problem 2
 
-I can take the mean of the sample, too!
-The mean is `r mean(samp)`.
