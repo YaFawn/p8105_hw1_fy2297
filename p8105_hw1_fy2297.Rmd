@@ -8,25 +8,59 @@ output: html_document
 # Problem 1
 ## description of the dataset
 ```{r}
+# get dataset using code provided
 data("penguins", package = "palmerpenguins")
+# make a new dataset without N/A values in flipper length column
 penguins_new <- penguins[-c(4,272),]
+# calculate the sizes of the new dataset
 num_row <- nrow(penguins)
 num_col <- ncol(penguins)
+# calculate the mean of flipper length
 mean_flipper <- mean(penguins_new$flipper_length_mm)
-mean_flipper
 ```
 The name of the dataset is called penguins, and there are `r num_col` different variables.
 The size of the dataset is `r num_col` * `r num_row`, and the mean flipper length is `r mean_flipper`mm.
 
 ## scatterplot making
 ```{r}
+# run library first
 library(tidyverse)
+# name axes for better future use
 x_axis <- penguins_new$bill_length_mm
 y_axis <- penguins_new$flipper_length_mm
 plot = tibble(x = x_axis, y = y_axis)
-plot
+# make a plot using ggplot
 ggplot(plot,aes(x=x, y=y, color = "blue"))+geom_point()+labs(title = "bill length v.s. flipper length", x = "bill length (mm)",y = "flipper length (mm)")
+# save the plot just created
+ggsave("bill length v.s. flipper length", plot = last_plot(), device = "pdf")
 ```
 
 # Problem 2
+```{r}
+set.seed(1234)
+# create four different vectors
+normal_vector <- rnorm(10)
+logical_vector <- vector("logical", 10)
+character_vector <- vector("character", 10)
+    as.numeric(character_vector)
+factor_vector <- factor(c("small","medium","large","small","medium","large","small","medium","large","small"))
+    as.numeric(factor_vector)
+# make a data frame using four vectors
+df = tibble (normal_vector, logical_vector, character_vector, factor_vector)
+# pull the variables out of the frame
+data_norm <- pull(df, var = normal_vector)
+data_logical <- pull(df, var = logical_vector)
+data_character <- pull(df, var = character_vector)
+data_factor <- pull(df, var = factor_vector)
+# take the means of each variable
+mean_norm <- mean(data_norm)
+mean_logical <- mean(data_logical)
+mean_character <- mean(data_character)
+mean_factor <- mean(data_factor)
+```
+
+
+
+
+
 
