@@ -30,7 +30,8 @@ x_axis <- penguins_new$bill_length_mm
 y_axis <- penguins_new$flipper_length_mm
 plot = tibble(x = x_axis, y = y_axis)
 # make a plot using ggplot
-ggplot(plot,aes(x=x, y=y, color = "blue"))+geom_point()+labs(title = "bill length v.s. flipper length", x = "bill length (mm)",y = "flipper length (mm)")
+species = penguins_new$species
+ggplot(plot,aes(x=x, y=y, color = species))+geom_point()+labs(title = "bill length v.s. flipper length", x = "bill length (mm)",y = "flipper length (mm)")
 # save the plot just created
 ggsave("bill length v.s. flipper length", plot = last_plot(), device = "pdf")
 ```
@@ -40,11 +41,9 @@ ggsave("bill length v.s. flipper length", plot = last_plot(), device = "pdf")
 set.seed(1234)
 # create four different vectors
 normal_vector <- rnorm(10)
-logical_vector <- vector("logical", 10)
+logical_vector <- normal_vector>0
 character_vector <- vector("character", 10)
-    as.numeric(character_vector)
 factor_vector <- factor(c("small","medium","large","small","medium","large","small","medium","large","small"))
-    as.numeric(factor_vector)
 # make a data frame using four vectors
 df = tibble (normal_vector, logical_vector, character_vector, factor_vector)
 # pull the variables out of the frame
@@ -52,15 +51,23 @@ data_norm <- pull(df, var = normal_vector)
 data_logical <- pull(df, var = logical_vector)
 data_character <- pull(df, var = character_vector)
 data_factor <- pull(df, var = factor_vector)
-# take the means of each variable
+# take the means of each variable (w/o as.numeric)
 mean_norm <- mean(data_norm)
 mean_logical <- mean(data_logical)
 mean_character <- mean(data_character)
 mean_factor <- mean(data_factor)
 ```
+when calculating the means of each vector, only normal and logical vector works, but character and factor vectors don't.
 
-
-
+```{r eval = FALSE}
+data_logical_num = as.numeric(data_logical)
+data_character_num = as.numeric(data_character)
+data_factor_num = as.numeric(data_factor)
+mean_logical_num = mean(data_logical_num)
+mean_character_num = mean(data_character_num)
+mean_factor_num = mean(data_factor_num)
+```
+after converting them to "double" type vector, means can be calculated. It explained why it didn't work before b/c R could only take means of "double" and "integer". 
 
 
 
